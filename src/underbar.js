@@ -85,12 +85,24 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    var result = [];
+    for (var i in collection) {
+      if (test(collection[i]) === true) {result.push(collection[i])};
+    }
+    return result;
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    // DANIEL: did not quite understand this comment! Did it mean simply retype for practice? Solution seemed okay.
+
+  var result = [];
+    for (var i in collection) {
+      if (test(collection[i]) !== true) {result.push(collection[i])};
+    }
+    return result;
   };
 
   // Produce a duplicate-free version of the array.
