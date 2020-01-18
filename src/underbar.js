@@ -107,7 +107,30 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
-  };
+  
+    var result = [];
+    
+    if (isSorted) {
+      result.push(array[0]);
+      for (var i = 1; i < array.length; i++) {
+        if (array[i] !== array[(i - 1)]) {
+          result.push(array[i]);
+        }
+      }
+    
+    } else {
+
+//testing functions did not specify not using underbar functions for this section.
+      array.forEach(function(element) {
+        if(result.indexOf(element) === -1) {
+          result.push(element);
+        }
+      });
+    }
+
+    return result;
+};
+
 
 
   // Return the results of applying an iterator to each element.
