@@ -54,17 +54,12 @@
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
 
-    if (collection[length] === undefined) {
-    for (var i in collection) {
-      iterator(collection[i], i, collection);
-    }
-  } 
-    else {
-    for (var i = 0; i < collection.length; i++) {
-      iterator(collection[i], i, collection);
-    }
+    if (Array.isArray(collection)) {
+      for (var i = 0; i < collection.length; i++) { iterator(collection[i], i, collection); }
+    } else
+      for (var i in collection) { iterator(collection[i], i, collection); }
+
   }
-  };
 
   // Returns the index at which value can be found in the array, or -1 if value
   // is not present in the array.
@@ -120,12 +115,10 @@
     
     } else {
 
-//testing functions did not specify not using underbar functions for this section.
-      array.forEach(function(element) {
-        if(result.indexOf(element) === -1) {
-          result.push(element);
+      _.each(array, function(i) {
+        if(result.indexOf(i) === -1) {result.push(i);
         }
-      });
+      })
     }
 
     return result;
@@ -187,20 +180,20 @@
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
 
-    if (accumulator === undefined) {
+    if (accumulator === undefined) { 
       accumulator = collection[0];
       for (var j = 1; j < collection.length; j++) {
-      accumulator = iterator(accumulator, collection[j]);
-    }
-    return accumulator;
+        accumulator = iterator(accumulator, collection[j]);
+      }
+    } else {
 
-  } else if (accumulator) { 
-    for (var i in collection) {
-      accumulator = iterator(accumulator, collection[i]);
+      for (var i in collection) {
+        accumulator = iterator(accumulator, collection[i]);
+      }
     }
-  }
 
-    return accumulator;
+  return accumulator;
+
   };
 
   // Determine if the array or object contains a given value (using `===`).
@@ -219,12 +212,34 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+
+    return _.reduce(collection, function(passing, item) {
+        
+        if (!passing) {return false;}
+
+        if (iterator === undefined) {return item;}
+
+        return Boolean(iterator(item));
+
+    }, true);
+
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+
+    return _.reduce(collection, function(passing, item) {
+        
+        if (passing) {return true;}
+
+        if (iterator === undefined) {return item;}
+
+        return Boolean(iterator(item));
+
+    }, false);
+
   };
 
 
